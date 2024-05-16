@@ -1,6 +1,6 @@
 import { ChangeEvent, useState } from "react";
 import "./index.css";
-import { postUrl } from "@/api";
+import { postUrl } from "@/api/request";
 
 const UrlCardInput = () => {
   const [input, setInput] = useState<string>("");
@@ -13,7 +13,8 @@ const UrlCardInput = () => {
   const onSubmit = async (url: string) => {
     console.log(url);
     const res = await postUrl(url);
-    res === 200 ? setError(false) : setError(true);
+    console.log(res);
+    res.success ? setError(false) : setError(true);
   };
 
   const disable = input.length === 0;

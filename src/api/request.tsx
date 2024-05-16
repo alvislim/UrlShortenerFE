@@ -4,10 +4,10 @@ const postUrl = async (url: string) => {
   return axios
     .post("http://localhost:5173/post", { origUrl: url })
     .then((res) => {
-      return res.status;
+      return res.data;
     })
     .catch((error) => {
-      return error.response.status;
+      return error.response.data;
     });
 };
 
