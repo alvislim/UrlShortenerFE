@@ -1,10 +1,10 @@
 import "./App.css";
-import InputCard from "@/components/inputCard";
+import UrlCardInput from "@/components/urlCardInput";
 
 function App() {
   return (
     <>
-      <InputCard />
+      <UrlCardInput />
     </>
   );
 }

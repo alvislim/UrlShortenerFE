@@ -1,7 +1,8 @@
 import { ChangeEvent, useState } from "react";
+import axios from "axios";
 import "./index.css";
 
-const InputCard = () => {
+const UrlCardInput = () => {
   const [input, setInput] = useState<string>("");
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -10,7 +11,17 @@ const InputCard = () => {
 
   const onSubmit = (url: string) => {
     console.log(url);
+    axios
+      .post("http://localhost:5173/post", { origUrl: url })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   };
+
+  const disable = input.length === 0;
 
   return (
     <div className='card-container'>
@@ -23,7 +34,10 @@ const InputCard = () => {
           className='input'
           placeholder='Enter the link here'
         />
-        <button className='cta' onClick={() => onSubmit(input)}>
+        <button
+          className='cta'
+          onClick={() => onSubmit(input)}
+          disabled={disable}>
           Shorten URL
         </button>
       </div>
@@ -36,4 +50,4 @@ const InputCard = () => {
   );
 };
 
-export default InputCard;
+export default UrlCardInput;
