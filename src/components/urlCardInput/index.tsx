@@ -1,20 +1,34 @@
 import { ChangeEvent, useState } from "react";
 import "./index.css";
 import { postUrl } from "@/api/request";
+import { useUrlStore } from "@/store/url";
 
 const UrlCardInput = () => {
   const [input, setInput] = useState<string>("");
   const [error, setError] = useState<boolean>(false);
+
+  const { urlArr, setUrlArr } = useUrlStore();
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
   };
 
   const onSubmit = async (url: string) => {
-    console.log(url);
     const res = await postUrl(url);
-    console.log(res);
-    res.success ? setError(false) : setError(true);
+    if (res.success) {
+      const shortUrl = res.payload.short;
+
+      setError(false);
+      const currArr = urlArr;
+
+      if (!currArr.includes(shortUrl)) {
+        currArr.push(shortUrl);
+        setUrlArr(currArr);
+      }
+    } else {
+      setInput("");
+      setError(true);
+    }
   };
 
   const disable = input.length === 0;
@@ -42,6 +56,11 @@ const UrlCardInput = () => {
         <br />
         Shortener allows to create a shortened link making it easy to share
       </p>
+      {urlArr
+        ? urlArr.map((url, index) => {
+            return <p key={`${url}_${index}`}>{url}</p>;
+          })
+        : null}
     </div>
   );
 };

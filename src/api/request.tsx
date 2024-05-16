@@ -1,6 +1,15 @@
 import axios from "axios";
 
-const postUrl = async (url: string) => {
+interface PostUrl {
+  message: string;
+  payload: {
+    long: string;
+    short: string;
+  };
+  success: boolean;
+}
+
+const postUrl = async (url: string): Promise<PostUrl> => {
   return axios
     .post("http://localhost:5173/post", { origUrl: url })
     .then((res) => {
