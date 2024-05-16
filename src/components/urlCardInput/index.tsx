@@ -1,24 +1,19 @@
 import { ChangeEvent, useState } from "react";
-import axios from "axios";
 import "./index.css";
+import { postUrl } from "@/api";
 
 const UrlCardInput = () => {
   const [input, setInput] = useState<string>("");
+  const [error, setError] = useState<boolean>(false);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
   };
 
-  const onSubmit = (url: string) => {
+  const onSubmit = async (url: string) => {
     console.log(url);
-    axios
-      .post("http://localhost:5173/post", { origUrl: url })
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
+    const res = await postUrl(url);
+    res === 200 ? setError(false) : setError(true);
   };
 
   const disable = input.length === 0;
