@@ -43,7 +43,6 @@ const UrlCardInput = () => {
     try {
       await navigator.clipboard.writeText(string);
       setOnCopy(index);
-      console.log(index);
     } catch (err) {
       throw err;
     }
