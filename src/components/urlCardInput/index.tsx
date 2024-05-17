@@ -7,6 +7,7 @@ import Input from "@/components/input";
 
 const UrlCardInput = () => {
   const [input, setInput] = useState<string>("");
+  const [onCopy, setOnCopy] = useState<number>(Infinity);
   const [error, setError] = useState<{
     error: boolean;
     code?: number;
@@ -34,15 +35,15 @@ const UrlCardInput = () => {
         setUrlArr(currArr);
       }
     } else {
-      console.log(res);
-      setInput("");
       setError({ error: true, code: res.code, msg: res.message });
     }
   };
 
-  const copyToClipBoard = async (string: string) => {
+  const copyToClipBoard = async (string: string, index: number) => {
     try {
       await navigator.clipboard.writeText(string);
+      setOnCopy(index);
+      console.log(index);
     } catch (err) {
       throw err;
     }
@@ -68,15 +69,26 @@ const UrlCardInput = () => {
         Shortener allows to create a shortened link making it easy to share
       </p>
       {urlArr
-        ? urlArr.map((url, index) => {
+        ? urlArr.map((_, index, arr) => {
+            const reversedIndex = arr.length - 1 - index;
+            const currEle = arr[arr.length - 1 - index];
             return (
-              <div className='short-url-wrapper' key={`${url}_${index}`}>
-                <Input value={url} disabled={true} />
+              <div
+                className='short-url-wrapper'
+                key={`${currEle}_${reversedIndex}`}>
+                <Input value={currEle} disabled={true} />
                 <MainCta
                   disabled={false}
                   text='Copy URL'
-                  onClick={async () => await copyToClipBoard(url)}
+                  onClick={async () =>
+                    await copyToClipBoard(currEle, reversedIndex)
+                  }
                 />
+                {onCopy === reversedIndex ? (
+                  <span key={reversedIndex} className='on-copied-prompt'>
+                    Copied!
+                  </span>
+                ) : null}
               </div>
             );
           })

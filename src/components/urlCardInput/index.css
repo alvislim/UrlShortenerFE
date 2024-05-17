@@ -1,6 +1,6 @@
 .card-container {
   width: 100%;
-  max-width: 758px;
+  max-width: 780px;
   border-radius: 6px;
   padding: 10px 30px 5px;
   text-align: center;
@@ -33,8 +33,38 @@
   height: 40px;
   width: 100%;
   margin: 5px;
+  position: relative;
 }
 
 .error-msg {
-  color: red;
+  color: var(--error-red);
+}
+
+.card-container > .short-url-wrapper > .on-copied-prompt {
+  position: absolute;
+  padding: 8px;
+  margin-left: 10px;
+  background-color: var(--blue-shade);
+  font-weight: 600;
+  color: var(--white-shade);
+  border-radius: 2px;
+  animation: cssAnimation 3s forwards;
+}
+
+@media screen and (max-width: 600px) {
+  .card-container > .short-url-wrapper > .on-copied-prompt {
+    margin-left: 3px;
+  }
+}
+
+@keyframes cssAnimation {
+  0% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }

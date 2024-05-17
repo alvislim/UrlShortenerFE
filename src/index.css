@@ -15,6 +15,7 @@
   --blue-shade: #2c87c5;
   --white: #fff;
   --white-shade: #f9f9f9;
+  --error-red: red;
 }
 
 body {
