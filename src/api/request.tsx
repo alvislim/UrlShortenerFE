@@ -7,6 +7,7 @@ interface PostUrl {
     short: string;
   };
   success: boolean;
+  code: number;
 }
 
 const postUrl = async (url: string): Promise<PostUrl> => {

@@ -2,10 +2,18 @@ import { ChangeEvent, useState } from "react";
 import "./index.css";
 import { postUrl } from "@/api/request";
 import { useUrlStore } from "@/store/url";
+import MainCta from "@/components/mainCta";
+import Input from "@/components/input";
 
 const UrlCardInput = () => {
   const [input, setInput] = useState<string>("");
-  const [error, setError] = useState<boolean>(false);
+  const [error, setError] = useState<{
+    error: boolean;
+    code?: number;
+    msg?: string;
+  }>({
+    error: false,
+  });
 
   const { urlArr, setUrlArr } = useUrlStore();
 
@@ -18,7 +26,7 @@ const UrlCardInput = () => {
     if (res.success) {
       const shortUrl = res.payload.short;
 
-      setError(false);
+      setError({ error: false });
       const currArr = urlArr;
 
       if (!currArr.includes(shortUrl)) {
@@ -26,8 +34,17 @@ const UrlCardInput = () => {
         setUrlArr(currArr);
       }
     } else {
+      console.log(res);
       setInput("");
-      setError(true);
+      setError({ error: true, code: res.code, msg: res.message });
+    }
+  };
+
+  const copyToClipBoard = async (string: string) => {
+    try {
+      await navigator.clipboard.writeText(string);
+    } catch (err) {
+      throw err;
     }
   };
 
@@ -37,20 +54,14 @@ const UrlCardInput = () => {
     <div className='card-container'>
       <p className='title'>Paste the URL to be shortened</p>
       <div className='input-wrapper'>
-        <input
-          type='text'
-          value={input}
-          onChange={(e) => onChange(e)}
-          className='input'
-          placeholder='Enter the link here'
+        <Input onChange={(e) => onChange(e)} value={input} />
+        <MainCta
+          disabled={disable}
+          onClick={async () => await onSubmit(input)}
+          text='Shorten URL'
         />
-        <button
-          className='cta'
-          onClick={() => onSubmit(input)}
-          disabled={disable}>
-          Shorten URL
-        </button>
       </div>
+      {error.error ? <p className='error-msg'>{error.msg}</p> : null}
       <p className='desc'>
         ShortURL is a free tool to shorten URLs and generate short links
         <br />
@@ -58,7 +69,16 @@ const UrlCardInput = () => {
       </p>
       {urlArr
         ? urlArr.map((url, index) => {
-            return <p key={`${url}_${index}`}>{url}</p>;
+            return (
+              <div className='short-url-wrapper' key={`${url}_${index}`}>
+                <Input value={url} disabled={true} />
+                <MainCta
+                  disabled={false}
+                  text='Copy URL'
+                  onClick={async () => await copyToClipBoard(url)}
+                />
+              </div>
+            );
           })
         : null}
     </div>

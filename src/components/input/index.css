@@ -1,0 +1,14 @@
+.input {
+  display: table-cell;
+  width: 60%;
+  height: inherit;
+  border: 1px solid #bbb;
+  border-radius: 3px;
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+  box-sizing: border-box;
+  border-right: 0;
+  padding: 10px 16px;
+  font-size: 1rem;
+  box-shadow: 0 1px 4px #ccc;
+}
