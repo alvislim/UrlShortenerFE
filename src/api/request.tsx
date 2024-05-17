@@ -11,8 +11,12 @@ interface PostUrl {
 }
 
 const postUrl = async (url: string): Promise<PostUrl> => {
+  console.log(import.meta.env);
+  const envUrl = import.meta.env.DEV
+    ? import.meta.env.VITE_LOCAL_URL
+    : import.meta.env.VITE_PROD_URL;
   return axios
-    .post("http://localhost:5173/post", { origUrl: url })
+    .post(`${envUrl}post`, { origUrl: url })
     .then((res) => {
       return res.data;
     })
